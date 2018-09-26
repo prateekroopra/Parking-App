@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "sdkVersion": "24.0.0",
+    "android": {
+      "package": "com.prateek.parkingapp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCtD33I4m9BDpqKnJe8qJ4lNmTKVXYc3RI"
+        }
+      }
+    }
+  }
+}
