@@ -4,18 +4,6 @@ import { AsyncStorage } from 'react-native';
 import { MapView, Location, Permissions } from 'expo';
 import CustomMarker from '../CustomMarker';
 
-// lot 25 coords
-const lot25 = {
-  latitude: 33.2091237,
-  longitude: -97.1502889,
-};
-
-// lot 1, 2, 3 coords
-const lot123 = {
-  latitude: 33.2115122,
-  longitude: -97.1494314,
-};
-
 class ParkingMapView extends React.Component {
   constructor(props) {
     super(props);
@@ -98,7 +86,7 @@ class ParkingMapView extends React.Component {
               }}
               onPress={() => this.props.navigation.navigate('SelectTime')}
             >
-              <CustomMarker lot={'Lot 25'} />
+              <CustomMarker lot={'$20'} />
             </MapView.Marker>
             <MapView.Marker
               coordinate={{
@@ -107,7 +95,7 @@ class ParkingMapView extends React.Component {
               }}
               onPress={() => this.props.navigation.navigate('SelectTime')}
             >
-              <CustomMarker lot={'Lot 1, 2, 3'} />
+              <CustomMarker lot={'$15'} />
             </MapView.Marker>
           </MapView>
        )

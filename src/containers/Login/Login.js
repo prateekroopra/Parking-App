@@ -16,6 +16,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import { TextField } from 'react-native-material-textfield';
 import RadioForm from 'react-native-simple-radio-button';
 import Logo from '../../images/logo.png';
 import MainApp from '../MainApp';
@@ -74,6 +75,7 @@ class Login extends React.Component {
       };
 
       // this.props.signInUserMethod(payload);
+      AsyncStorage.setItem('email', email);
       this.navigateToHomeScreen(routeName);
     }
   };
@@ -92,6 +94,7 @@ class Login extends React.Component {
       };
 
       // this.props.registerUserMethod(payload);
+      AsyncStorage.setItem('email', email);
       this.navigateToHomeScreen(routeName);
     }
   };
@@ -222,8 +225,8 @@ class Login extends React.Component {
             {this.state.type === 0 
               ? (
                 <View style={styles.formInner}>
-                  <TextInput
-                    placeholder="Email Address"
+                  <TextField
+                    label="Email Address"
                     returnKeyType="next"
                     style={styles.formInput}
                     keyboardType="email-address"
@@ -237,9 +240,9 @@ class Login extends React.Component {
 
                   <Text style={styles.helperText}>{this.state.inputEmailError}</Text>
 
-                  <TextInput
+                  <TextField
                     ref={(input) => this.nameInput = input}
-                    placeholder="Full Name"
+                    label="Full Name"
                     returnKeyType="next"
                     style={styles.formInput}
                     autoCapitalize="none"
@@ -252,9 +255,9 @@ class Login extends React.Component {
 
                   <Text style={styles.helperText}>{this.state.inputfullNameError}</Text>
 
-                  <TextInput
+                  <TextField
                     ref={(input) => this.passwordInput = input}
-                    placeholder="Password"
+                    label="Password"
                     returnKeyType="next"
                     secureTextEntry
                     style={styles.formInput}
@@ -268,8 +271,8 @@ class Login extends React.Component {
 
                   <Text style={styles.helperText}>{this.state.inputPasswordError}</Text>
 
-                  <TextInput
-                    placeholder="Phone Number"
+                  <TextField
+                    label="Phone Number"
                     returnKeyType="next"
                     keyboardType="numeric"
                     style={styles.formInput}
@@ -313,8 +316,8 @@ class Login extends React.Component {
                 </View>
               ) : (
                 <View style={styles.formInner}>
-                  <TextInput
-                    placeholder="Email Address"
+                  <TextField
+                    label="Email Address"
                     returnKeyType="next"
                     style={styles.formInput}
                     keyboardType="email-address"
@@ -328,8 +331,8 @@ class Login extends React.Component {
 
                   <Text style={styles.helperText}>{this.state.inputEmailError}</Text>
 
-                  <TextInput
-                    placeholder="Password"
+                  <TextField
+                    label="Password"
                     returnKeyType="go"
                     secureTextEntry
                     style={styles.formInput}
@@ -402,8 +405,8 @@ const styles = StyleSheet.create({
   },
   helperText: {
     color: 'red',
-    marginLeft: 10,
-    marginRight: 10,
+    // marginLeft: 10,
+    // marginRight: 10,
     marginTop: 0,
   },
   image: {
@@ -439,13 +442,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   formInput: {
-    height: 45,
+    // height: 45,
     // backgroundColor: '#f4f4f4',
-    borderBottomColor: 'grey',
-    borderBottomWidth: 0.5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    fontSize: 16
+    // borderBottomColor: 'grey',
+    // borderBottomWidth: 0.5,
+    // marginBottom: 10,
+    // paddingHorizontal: 10,
+    fontSize: 18
   },
   buttonContainer: {
     paddingVertical: 15,
@@ -455,11 +458,11 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color: '#FFFFFF',
-    fontWeight: '700'
+    fontWeight: '700',
   },
   radioContainer: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 10,
   },
   mainRadioContainer: {
