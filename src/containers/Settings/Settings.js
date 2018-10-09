@@ -117,7 +117,7 @@ class Settings extends React.Component {
 
             <View style={styles.textContainer}>
               <Text style={styles.buttonText}>
-                PASSES
+                Free Parking
               </Text>
             </View>
           </TouchableOpacity>
@@ -136,6 +136,23 @@ class Settings extends React.Component {
             <View style={styles.textContainer}>
               <Text style={styles.buttonText}>
                 PAYMENT METHOD
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View elevation={2} style={styles.cardView}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => { this.props.navigation.navigate('Payment'); }}
+          >
+            <Image
+              style={styles.icon}
+              source={Payment}
+            />
+
+            <View style={styles.textContainer}>
+              <Text style={styles.buttonText}>
+                BUSINESS PROFILE
               </Text>
             </View>
           </TouchableOpacity>

@@ -222,7 +222,7 @@ const SettingsTab = StackNavigator({
     screen: MySettingsScreen,
     path: '/',
     navigationOptions: () => ({
-      title: 'Settings',
+      title: 'Account',
       headerStyle: styles.header,
       headerTitleStyle: {
         alignSelf: 'center',
@@ -336,7 +336,7 @@ const MainApp = TabNavigator(
       screen: SettingsTab,
       path: '/settings',
       navigationOptions: {
-        tabBarLabel: 'Settings',
+        tabBarLabel: 'Account',
         tabBarIcon: ({ tintColor, focused }) => (
           <Ionicons
             name={focused ? 'ios-settings' : 'ios-settings-outline'}

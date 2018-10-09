@@ -246,15 +246,16 @@ class TimeSummary extends React.Component {
               />
             </View>
           </View>
-        </View>
-
-        <View style={{  }}>
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={() => { this.props.nav.navigate('ConfirmTime') }}
           >
             <Text style={styles.buttonText}> SUBMIT </Text>
           </TouchableOpacity>
+        </View>
+
+        <View style={styles.container}>
+        
         </View>
       </View>
     );
