@@ -1,8 +1,9 @@
 import React from 'react';
 import {
   ScrollView, View, Image,
-  TouchableOpacity, Text, StyleSheet, AsyncStorage
+  TouchableOpacity, Text, StyleSheet, AsyncStorage, Platform
 } from 'react-native';
+import {Constants} from "expo";
 import { StackNavigator, TabNavigator, NavigationActions } from 'react-navigation';
 import Dimensions from 'Dimensions';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -99,9 +100,10 @@ const MainTab = StackNavigator({
     screen: MyHomeScreen,
     path: '/',
     navigationOptions: ({ navigation }) => ({
+      header: null,
       title: `Select parking lot`,
       headerStyle: styles.header,
-      headerTitleStyle: styles.headerTitle
+      headerTitleStyle: styles.headerTitle,
     }),
   },
   ParkingLot25: {
@@ -224,12 +226,7 @@ const SettingsTab = StackNavigator({
     navigationOptions: () => ({
       title: 'Account',
       headerStyle: styles.header,
-      headerTitleStyle: {
-        alignSelf: 'center',
-        color: 'white',
-        width: '90%',
-        textAlign: 'center',
-      },
+      headerTitleStyle: styles.headerTitle,
       headerLeft: (<View />),
       headerRight: (<View />),
     }),
@@ -356,7 +353,9 @@ const MainApp = TabNavigator(
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: 'rgba(25, 73, 165, 1)'
+    backgroundColor: 'rgba(25, 73, 165, 1)',
+    height: Constants.statusBarHeight + (Platform.OS === "ios" ? 44 : 56),
+    paddingTop: Platform.OS === "ios" ? 20 : Constants.statusBarHeight,
   },
   headerTitle: {
     // color: 'white'

@@ -41,7 +41,7 @@ class Settings extends React.Component {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
+      <ScrollView style={styles.scrollview}>
         <StatusBar
           barStyle="light-content"
         />
@@ -117,7 +117,7 @@ class Settings extends React.Component {
 
             <View style={styles.textContainer}>
               <Text style={styles.buttonText}>
-                Free Parking
+                FREE PARKING
               </Text>
             </View>
           </TouchableOpacity>
@@ -165,6 +165,10 @@ class Settings extends React.Component {
 }
     
 const styles = StyleSheet.create({
+  scrollview: {
+    flex: 1,
+    height: '100%',
+  },
   icon: {
     marginLeft: 30,
     width: 30,
@@ -198,12 +202,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     paddingVertical: 15,
+    width: '100%',
   },
   buttonText: {
     textAlign: 'center',
     color: 'rgba(67,88,102, 1)',
     fontWeight: 'bold',
     marginLeft: 30,
+    fontSize: 12,
   },
   signOut: {
     color: 'blue',
