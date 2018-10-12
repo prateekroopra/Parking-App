@@ -49,12 +49,6 @@ class ParkingMapView extends React.Component {
     });
   }
 
-  renderTopView() {
-    return (
-      <View><Text>ddds</Text></View>
-    )
-  }
-
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -113,7 +107,7 @@ class ParkingMapView extends React.Component {
         )
         }
 
-        <View style={{ height: '60%', position: 'absolute', width: '100%' }}>
+        <View style={{ position: 'absolute', width: '100%' }}>
           <GooglePlacesAutocomplete
             placeholder='Location'
             autoFocus={false}

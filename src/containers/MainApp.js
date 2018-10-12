@@ -354,8 +354,8 @@ const MainApp = TabNavigator(
 const styles = StyleSheet.create({
   header: {
     backgroundColor: 'rgba(25, 73, 165, 1)',
-    height: Constants.statusBarHeight + (Platform.OS === "ios" ? 44 : 56),
-    paddingTop: Platform.OS === "ios" ? 20 : Constants.statusBarHeight,
+    height: Platform.OS === 'android' ? Constants.statusBarHeight + 56 : 44,
+    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
   },
   headerTitle: {
     // color: 'white'
