@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import {
   StyleSheet,
@@ -9,13 +10,16 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Image,
+  Alert,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { ImagePicker } from 'expo';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import Geocoder from 'react-native-geocoding';
 import { TextField } from 'react-native-material-textfield';
 import DatePicker from 'react-native-datepicker';
-import AddParking from '../../images/AddParking.png';
+import { Loading } from '../../../utils/Loading';
+import AddParking from '../../../images/AddParking.png';
 
 Geocoder.init('AIzaSyCYQHauEaqFsGItbv4ZyHBGWm2FDxsF2nQ');
 
@@ -23,10 +27,16 @@ class ParkingDetailsForm extends React.Component {
   constructor() {
     super();
     this.state = {
+      name: '',
+      description: '',
+      phoneNumber: '',
+      amount: '',
+      address_line: '',
       location: '',
       from: '',
       to: '',
       image: null,
+      loading: false,
     };
   }
 
@@ -43,12 +53,10 @@ class ParkingDetailsForm extends React.Component {
   }
 
   onFromTimeChange(time) {
-    console.log(`date->${this.state.date}`);
     this.setState({ from: time });
   }
 
   onToTimeChange(time) {
-    console.log(`date->${this.state.date}`);
     this.setState({ to: time });
   }
 
@@ -65,12 +73,72 @@ class ParkingDetailsForm extends React.Component {
     }
   };
 
+  onSubmit = () => {
+    const { 
+      addParking,
+    } = this.props;
+
+    const {
+      name,
+      description,
+      phoneNumber,
+      amount,
+      address_line,
+      location,
+      from,
+      to,
+    } = this.state;
+
+    console.log('ADD PARKING--->' + JSON.stringify(location))
+
+    if (_.isEmpty(name) ||
+        _.isEmpty(description) || 
+        _.isEmpty(phoneNumber) || 
+        _.isEmpty(amount) ||
+        _.isEmpty(address_line) || 
+        _.isEmpty(location) || 
+        _.isEmpty(from) ||
+        _.isEmpty(to)
+    ) {
+      Alert.alert('Alert','Please fill all required fields.');
+    } else {
+      this.setState({ loading: true });
+      const payload = {
+        name: name,
+        description: description,
+        phone_number: phoneNumber,
+        amount: amount,
+        address_line1: address_line,
+        location: location,
+        from: from,
+        to: to,
+      };
+      console.log('ADD PARKING--->' + JSON.stringify(payload))
+      addParking(payload).then(() => {
+        const { parking } = this.props;
+        if (parking.error === 0) {
+          this.setState({ loading: false }, () => this.props.navigation.navigate('ConfirmationScreen'));
+        } else {
+          console.log('ADD PARKING ERRORO--->' + JSON.stringify(parking.message))
+          this.setState({ error: parking.message, loading: false });
+        }
+      });
+    }
+  }
+
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <StatusBar
           barStyle="light-content"
         />
+
+        {this.state.loading
+          ? (
+            <Loading size={'large'}/>
+          ) : null
+        }
+
         <ScrollView style={styles.scrollview}>
           <View style={{ margin: 20, height: 120, justifyContent: 'center', alignItems: 'center' }}>
             <TouchableOpacity
@@ -91,6 +159,8 @@ class ParkingDetailsForm extends React.Component {
               autoCorrect={false}
               onSubmitEditing={() => this.descriptionInput.focus()}
               underlineColorAndroid="transparent"
+              onChangeText={(name) => { this.setState({ name }) }}
+              value={this.state.name}
             />
             <TextField
               label="Description"
@@ -101,6 +171,8 @@ class ParkingDetailsForm extends React.Component {
               ref={(input) => this.descriptionInput = input}
               onSubmitEditing={() => this.phoneInput.focus()}
               underlineColorAndroid="transparent"
+              onChangeText={(description) => { this.setState({ description }) }}
+              value={this.state.description}
             />
             <TextField
               label="Phone Number"
@@ -109,6 +181,9 @@ class ParkingDetailsForm extends React.Component {
               style={styles.formInput}
               ref={(input) => this.phoneInput = input}
               underlineColorAndroid="transparent"
+              onSubmitEditing={() => this.amountInput.focus()}
+              onChangeText={(phoneNumber) => { this.setState({ phoneNumber }) }}
+              value={this.state.phoneNumber}
             />
 
             <TextField
@@ -117,8 +192,10 @@ class ParkingDetailsForm extends React.Component {
               keyboardType="numeric"
               style={styles.formInput}
               ref={(input) => this.amountInput = input}
-              onSubmitEditing={() => {}}
+              onSubmitEditing={() => this.addressInput.focus()}
               underlineColorAndroid="transparent"
+              onChangeText={(amount) => { this.setState({ amount }) }}
+              value={this.state.amount}
             />
             
             <TextField
@@ -127,6 +204,8 @@ class ParkingDetailsForm extends React.Component {
               style={styles.formInput}
               ref={(input) => this.addressInput = input}
               underlineColorAndroid="transparent"
+              onChangeText={(address_line) => { this.setState({ address_line }) }}
+              value={this.state.address_line}
             />
 
             <GooglePlacesAutocomplete
@@ -272,9 +351,7 @@ class ParkingDetailsForm extends React.Component {
 
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={() => {
-                this.props.navigation.navigate('ConfirmationScreen')
-              }}
+              onPress={this.onSubmit}
             >
               <Text style={styles.buttonText}>
                 SUBMIT
@@ -335,4 +412,9 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = ParkingDetailsForm;
+ParkingDetailsForm.propTypes = {
+  addParking: PropTypes.func.isRequired,
+  parking: PropTypes.object.isRequired,
+};
+
+export default ParkingDetailsForm;

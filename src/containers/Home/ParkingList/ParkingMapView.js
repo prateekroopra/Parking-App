@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AsyncStorage, View, Text } from 'react-native';
+import { AsyncStorage, View, Text, Alert } from 'react-native';
 import { MapView, Location, Permissions } from 'expo';
+import Geocoder from 'react-native-geocoding';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import CustomMarker from '../CustomMarker';
+import CustomMarker from '../../CustomMarker';
 
 class ParkingMapView extends React.Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class ParkingMapView extends React.Component {
       },
       searchLocation: undefined,
       userType: undefined,
+      arrParking: [],
     };
   }
 
@@ -31,6 +33,24 @@ class ParkingMapView extends React.Component {
       }
     }).done();
     this.getLocationAsync();
+    // this.getAllParkingList();
+  }
+
+  getAllParkingList() {
+    const { 
+      getParkingList,
+    } = this.props;
+  
+    getParkingList().then(() => {
+      const { parkingList } = this.props;
+      console.log('GET ALL PARKING--->' + JSON.stringify(parkingList));
+      if (parkingList.error === 0) {
+        this.setState({ arrParking: parkingList.data });
+      } else {
+        Alert.alert('Alert', parkingList.message);
+        this.setState({ error: parkingList.message });
+      }
+    })
   }
 
   getLocationAsync = async () => {
@@ -168,6 +188,8 @@ class ParkingMapView extends React.Component {
 
 ParkingMapView.propTypes = {
   navigation: PropTypes.object.isRequired,
+  getParkingList: PropTypes.func.isRequired,
+  parkingList: PropTypes.object.isRequired,
 };
 
-module.exports = ParkingMapView;
+export default ParkingMapView;

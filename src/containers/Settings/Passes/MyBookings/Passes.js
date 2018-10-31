@@ -10,7 +10,8 @@ import {
   ScrollView,
   ListView,
 } from 'react-native';
-import ParkingDefault from '../../../images/parking_road.png';
+import ParkingDefault from '../../../../images/parking_road.png';
+import { Loading } from '../../../../utils/Loading';
 
 const data = [
   {address: '34 Buswell St, Lawrence, MA', status: 'Paid', time: 'Hours 8:00 am  - 10:00 pm'},
@@ -25,6 +26,7 @@ class Passes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
@@ -33,6 +35,28 @@ class Passes extends React.Component {
 
   componentDidMount() {
     this.setState({ dataSource: this.state.dataSource.cloneWithRows(data) })
+    this.getAllUserBookings();
+  }
+
+  getAllUserBookings() {
+    const { 
+      getUserBookings,
+    } = this.props;
+  
+    this.setState({ loading: true });
+    getUserBookings().then(() => {
+      const { bookingList } = this.props;
+      console.log('BOOKING LIST--->' + JSON.stringify(bookingList));
+      if (bookingList.error === 0) {
+        this.setState({ loading: false });
+        if(bookingList.data.length > 0) {
+          this.setState({ dataSource: this.state.dataSource.cloneWithRows(bookingList.data) })
+        }
+      } else {
+        Alert.alert('Alert', bookingList.message);
+        this.setState({ error: bookingList.message, loading: false });
+      }
+    })
   }
 
   renderGridItem(rowdata) {
@@ -54,6 +78,12 @@ class Passes extends React.Component {
         <StatusBar
           barStyle="light-content"
         />
+
+        {this.state.loading
+          ? (
+            <Loading size={'large'}/>
+          ) : null
+        }
 
         {/* <View style={styles.topContainer}>
           <Text style={styles.title}>
@@ -105,6 +135,8 @@ const styles = StyleSheet.create({
 
 Passes.propTypes = {
   navigation: PropTypes.object.isRequired,
+  bookingList: PropTypes.object.isRequired,
+  getUserBookings: PropTypes.func.isRequired,
 };
 
-module.exports = Passes;
+export default Passes;

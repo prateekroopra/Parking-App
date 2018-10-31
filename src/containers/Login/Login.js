@@ -1,7 +1,6 @@
-import _ from "lodash";
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import {
   Platform,
   StyleSheet,
@@ -9,7 +8,6 @@ import {
   Text,
   View,
   Image,
-  TextInput,
   KeyboardAvoidingView,
   StatusBar,
   AsyncStorage,
@@ -20,18 +18,12 @@ import { TextField } from 'react-native-material-textfield';
 import RadioForm from 'react-native-simple-radio-button';
 import Logo from '../../images/logo.png';
 import MainApp from '../MainApp';
-import { signInUser, registerUser } from '../../actions';
+import { Loading } from '../../utils/Loading';
 
 const USER_RADIO_PROPS = [
   { label: 'Parking Owner', value: 0 },
   { label: 'Parking Finder', value: 1 },
 ];
-
-const RADIO_PROPS = [
-  { label: 'Sign Up', value: 0 },
-  { label: 'Sign In', value: 1 },
-];
-
 
 const Routes = {
   MainApp: {
@@ -63,41 +55,94 @@ class Login extends React.Component {
   }
 
   SignInClicked = (routeName) => {
-    const {email, password} = this.state;
+    const { 
+      signInWithFinder,
+      signInWithOwner
+    } = this.props;
+  
+    const {
+      email,
+      password
+    } = this.state;
+
     if (_.isEmpty(email) || _.isEmpty(password)) {
       Alert.alert('Alert','Please fill all required fields.');
     } else {
-      // this.setState({ loading: true });
-
-      const payload = {
-        email: email,
-        password: password,
+      const userData = {
+        email,
+        password,
       };
 
-      // this.props.signInUserMethod(payload);
-      AsyncStorage.setItem('email', email);
-      this.navigateToHomeScreen(routeName);
+      this.setState({ loading: true });
+      if (this.state.userType === 0) {
+        signInWithOwner(userData).then(() => {
+          this.handleSignInResponse(email, routeName)
+        });
+      } else {
+        signInWithFinder(userData).then(() => {
+          this.handleSignInResponse(email, routeName)
+        });
+      }
     }
   };
 
+  handleSignInResponse(email, routeName) {
+    const { user } = this.props;
+    if (user.error === 0) {
+      AsyncStorage.setItem('email', email);
+      this.setState({ loading: false }, () => this.navigateToHomeScreen(routeName));
+    } else {
+      Alert.alert('Alert',user.message);
+      this.setState({ error: user.message, loading: false });
+    }
+  }
+
   SignUpClicked(routeName) {
-    const {email, password, fullName, phoneNumber} = this.state;
+    const { 
+      addFinderUser,
+      addRegisterOwnerUser
+    } = this.props;
+  
+    const {
+      email,
+      password,
+      fullName,
+      phoneNumber
+    } = this.state;
+
     if (_.isEmpty(email) || _.isEmpty(password) || _.isEmpty(fullName) || _.isEmpty(phoneNumber)) {
       Alert.alert('Alert','Please fill all required fields.');
     } else {
-      // this.setState({ loading: true });
+      this.setState({ loading: true });
       const payload = {
         email: email,
         password: password,
-        fullName: fullName,
-        phoneNumber: phoneNumber,
+        full_name: fullName,
+        phone_number: phoneNumber,
       };
 
-      // this.props.registerUserMethod(payload);
-      AsyncStorage.setItem('email', email);
-      this.navigateToHomeScreen(routeName);
+      if (this.state.userType === 0) {
+        addRegisterOwnerUser(payload).then(() => {
+          this.handleSignUpResponse(email, routeName)
+        });
+      } else {
+        addFinderUser(payload).then(() => {
+          this.handleSignUpResponse(email, routeName)
+        });
+      }
     }
   };
+
+  handleSignUpResponse(email, routeName) {
+    const { addUserData } = this.props;
+    if (addUserData.error === 0) {
+      AsyncStorage.setItem('email', email);
+      this.setState({ loading: false }, () => this.navigateToHomeScreen(routeName));
+    } else {
+      Alert.alert('Alert', addUserData.message);
+      this.setState({ error: addUserData.message, loading: false });
+    }
+  }
 
   navigateToHomeScreen(routeName) {
     let userType = '';
@@ -179,6 +224,12 @@ class Login extends React.Component {
           <StatusBar
             barStyle="light-content"
           />
+
+          {this.state.loading
+            ? (
+              <Loading size={'large'}/>
+            ) : null
+          }
 
           <ScrollView style={styles.scrollview}>
             <View style={styles.logoContainer}>
@@ -489,19 +540,12 @@ const styles = StyleSheet.create({
     
 Login.propTypes = {
   navigation: PropTypes.object.isRequired,
+  signInWithFinder: PropTypes.func.isRequired,
+  signInWithOwner: PropTypes.func.isRequired,
+  addFinderUser: PropTypes.func.isRequired,
+  addRegisterOwnerUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  addUserData: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user
-  }
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signInUserMethod: (payload) => dispatch(signInUser(payload)),
-    registerUserMethod: (payload) => dispatch(registerUser(payload)),
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default Login;

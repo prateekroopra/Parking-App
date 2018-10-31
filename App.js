@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { StackNavigator } from 'react-navigation';
 import store from './src/store'
 import MainApp from './src/containers/MainApp';
-import LogInScreen from './src/containers/Login/Login';
+import LogInScreen from './src/containers/Login/index';
 
 ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT_UP);
 

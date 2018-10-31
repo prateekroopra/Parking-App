@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -9,8 +9,11 @@ import {
   StatusBar,
   ScrollView,
   Switch,
+  AsyncStorage,
+  Alert,
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
+import { Loading } from '../../../../utils/Loading';
 
 class AddVehicle extends React.Component {
   constructor(props) {
@@ -18,9 +21,19 @@ class AddVehicle extends React.Component {
     this.state = {
       license: '',
       nickName: '',
+      email: '',
       isMainRide: false,
       SwitchOnValueHolder: false,
+      loading: false,
     };
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('email').then((value) => {
+      if (value !== null) {
+        this.setState({ email: value })
+      }
+    })
   }
 
   ShowAlert = (value) => {
@@ -29,12 +42,51 @@ class AddVehicle extends React.Component {
     });
   }
 
+  onSubmit = () => {
+    const { 
+      addVehicle,
+    } = this.props;
+
+    const {
+      license,
+      nickName,
+      email
+    } = this.state;
+
+    if (_.isEmpty(license) || _.isEmpty(nickName)) {
+      Alert.alert('Alert','Please fill all required fields.');
+    } else {
+      this.setState({ loading: true });
+      const payload = {
+        license_num: license,
+        nickname: nickName,
+        email: email,
+      };
+
+      addVehicle(payload).then(() => {
+        const { vehicle } = this.props;
+        if (vehicle.error === 0) {
+          this.setState({ loading: false }, () => this.props.navigation.goBack() );
+        } else {
+          Alert.alert('Alert', vehicle.message);
+          this.setState({ error: vehicle.message, loading: false });
+        }
+      });
+    }
+  }
+
   render() {
     return (
       <ScrollView style={styles.scrollview}>
         <StatusBar
           barStyle="light-content"
         />
+
+        {this.state.loading
+          ? (
+            <Loading size={'large'}/>
+          ) : null
+        }
 
         <View style={styles.formInner}>
           <TextField
@@ -45,17 +97,17 @@ class AddVehicle extends React.Component {
             autoCorrect={false}
             onSubmitEditing={() => this.nickNameInput.focus()}
             underlineColorAndroid="transparent"
+            onChangeText={(license) => { this.setState({ license }) }}
             value={this.state.license}
           />
 
           <TextField
             label="Nickname (optional)"
             returnKeyType="go"
-            secureTextEntry
             style={styles.formInput}
             ref={(input) => this.nickNameInput = input}
             underlineColorAndroid="transparent"
-            // onChangeText={(text) => { }}
+            onChangeText={(nickName) => { this.setState({ nickName }) }}
             value={this.state.nickName}
           />
 
@@ -75,8 +127,7 @@ class AddVehicle extends React.Component {
 
           <TouchableOpacity
             style={styles.buttonContainer}
-            onPress={() => {
-            }}
+            onPress={this.onSubmit}
           >
             <Text style={styles.buttonText}>
               SAVE
@@ -136,6 +187,8 @@ const styles = StyleSheet.create({
     
 AddVehicle.propTypes = {
   navigation: PropTypes.object.isRequired,
+  vehicle: PropTypes.object.isRequired,
+  addVehicle: PropTypes.func.isRequired,
 };
 
 module.exports = AddVehicle;

@@ -15,9 +15,11 @@ const Loading = ({ size }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    height: '100%',
+    width: '100%',
   },
   horizontal: {
     flexDirection: 'row',
