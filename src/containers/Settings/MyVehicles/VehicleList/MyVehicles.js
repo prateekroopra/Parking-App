@@ -35,6 +35,10 @@ class MyVehicles extends React.Component {
   }
 
   componentDidMount() {
+    this.getVehicleList();
+  }
+
+  getVehicleList() {
     const { 
       getUserVehicle,
     } = this.props;
@@ -53,8 +57,8 @@ class MyVehicles extends React.Component {
               this.setState({ defaultView: true })
             }
           } else {
-            Alert.alert('Alert', VehicleList.message);
-            this.setState({ error: VehicleList.message, loading: false });
+            Alert.alert('Alert', VehicleList.data);
+            this.setState({ error: VehicleList.data, loading: false });
           }
         })
       }
@@ -82,47 +86,54 @@ class MyVehicles extends React.Component {
           barStyle="light-content"
         />
 
-        {this.state.loading
-          ? (
-            <Loading size={'large'}/>
-          ) : null
-        }
+        <View style={styles.container}>
+          {this.state.loading
+            ? (
+              <Loading size={'large'}/>
+            ) : null
+          }
 
-        {this.state.defaultView
-          ? (
-              <View style={styles.topContainer}>
-                <Text style={styles.title}>
-                  ADD A VEHICLE
-                </Text>
+          {this.state.defaultView
+            ? (
+                <View style={styles.topContainer}>
+                  <Text style={styles.title}>
+                    ADD A VEHICLE
+                  </Text>
 
-                <Text style={styles.subText}>
-                  You currently have no saved vehicles. Add one now 
-                  to quickly complete bookings.
-                </Text>
-              </View>
-          ) : (
-              <ListView
-                dataSource={this.state.dataSource}
-                renderRow={rowdata => this.renderGridItem(rowdata)}
-              />
-          )
-        }
+                  <Text style={styles.subText}>
+                    You currently have no saved vehicles. Add one now 
+                    to quickly complete bookings.
+                  </Text>
+                </View>
+            ) : (
+                <ListView
+                  dataSource={this.state.dataSource}
+                  renderRow={rowdata => this.renderGridItem(rowdata)}
+                />
+            )
+          }
 
-        <FloatingAction
-          ref={(ref) => { this.floatingAction = ref; }}
-          actions={actions}
-          showBackground={false}
-          overrideWithAction={true}
-          onPressItem={() => {
-            this.props.navigation.navigate('AddVehicle');
-          }}
-        />
+          <FloatingAction
+            ref={(ref) => { this.floatingAction = ref; }}
+            actions={actions}
+            showBackground={false}
+            overrideWithAction={true}
+            onPressItem={() => {
+              this.props.navigation.navigate('AddVehicle', { returnData: this.getVehicleList.bind(this)});
+            }}
+          />
+        </View>
     </ScrollView>
     );
   }
 }
     
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    height: '100%',
+  },
   topContainer: {
     justifyContent: 'center',
     alignItems: 'center',

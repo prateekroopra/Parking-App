@@ -185,6 +185,8 @@ export const addParking = data => (
       location: data.location,
       from: data.from,
       to: data.to,
+      lat: data.lat,
+      long: data.long,
     })
       .then((response) => {
         dispatch(addParkingSuccess(response.data));
@@ -245,6 +247,7 @@ export const bookParking = data => (
       parking_id: data.parking_id,
       from: data.from,
       to: data.to,
+      location: data.location,
     })
       .then((response) => {
         dispatch(bookParkingSuccess(response.data));
@@ -255,14 +258,16 @@ export const bookParking = data => (
   )
 );
 
-export const getUserBookings = () => (
+export const getUserBookings = (email) => (
   dispatch => (
-    axios.get(`${apiBaseURL}/getUserBookings`, {
+    axios.get(`${apiBaseURL}/getUserBookings?email=${email}`, {
     })
       .then((response) => {
+        console.log('RESPONSE---->' + JSON.stringify(response.data))
         dispatch(getUserBookingSuccess(response.data));
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log('ERR---->' + JSON.stringify(error))
         dispatch(getUserBookingError('could not get user bookings'));
       })
   )

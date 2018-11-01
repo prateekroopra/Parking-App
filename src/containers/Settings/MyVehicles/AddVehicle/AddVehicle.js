@@ -66,10 +66,15 @@ class AddVehicle extends React.Component {
       addVehicle(payload).then(() => {
         const { vehicle } = this.props;
         if (vehicle.error === 0) {
-          this.setState({ loading: false }, () => this.props.navigation.goBack() );
+          this.setState({ loading: false }, () => {
+            if (this.props.navigation.state.params.returnData !== undefined) {
+              this.props.navigation.state.params.returnData();
+            }
+            this.props.navigation.goBack()
+          });
         } else {
-          Alert.alert('Alert', vehicle.message);
-          this.setState({ error: vehicle.message, loading: false });
+          Alert.alert('Alert', vehicle.data);
+          this.setState({ error: vehicle.data, loading: false });
         }
       });
     }

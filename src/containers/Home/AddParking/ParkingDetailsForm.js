@@ -103,6 +103,8 @@ class ParkingDetailsForm extends React.Component {
       Alert.alert('Alert','Please fill all required fields.');
     } else {
       this.setState({ loading: true });
+      const { params } = this.props.navigation.state;
+      const coords = params ? params.coords : undefined;
       const payload = {
         name: name,
         description: description,
@@ -112,6 +114,8 @@ class ParkingDetailsForm extends React.Component {
         location: location,
         from: from,
         to: to,
+        lat: coords.latitude,
+        long: coords.longitude,
       };
       console.log('ADD PARKING--->' + JSON.stringify(payload))
       addParking(payload).then(() => {
@@ -119,8 +123,8 @@ class ParkingDetailsForm extends React.Component {
         if (parking.error === 0) {
           this.setState({ loading: false }, () => this.props.navigation.navigate('ConfirmationScreen'));
         } else {
-          console.log('ADD PARKING ERRORO--->' + JSON.stringify(parking.message))
-          this.setState({ error: parking.message, loading: false });
+          Alert.alert('Alert', parking.data);
+          this.setState({ error: parking.data, loading: false });
         }
       });
     }

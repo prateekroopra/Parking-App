@@ -69,8 +69,8 @@ class Login extends React.Component {
       Alert.alert('Alert','Please fill all required fields.');
     } else {
       const userData = {
-        email,
-        password,
+        email: email,
+        password: password,
       };
 
       this.setState({ loading: true });
@@ -88,12 +88,14 @@ class Login extends React.Component {
 
   handleSignInResponse(email, routeName) {
     const { user } = this.props;
+    console.log('USERR--->' + JSON.stringify(user));
     if (user.error === 0) {
       AsyncStorage.setItem('email', email);
       this.setState({ loading: false }, () => this.navigateToHomeScreen(routeName));
     } else {
-      Alert.alert('Alert',user.message);
-      this.setState({ error: user.message, loading: false });
+      console.log('EROROO--->' + JSON.stringify(user));
+      Alert.alert('Alert',user.data);
+      this.setState({ error: user.data, loading: false });
     }
   }
 
@@ -139,8 +141,8 @@ class Login extends React.Component {
       AsyncStorage.setItem('email', email);
       this.setState({ loading: false }, () => this.navigateToHomeScreen(routeName));
     } else {
-      Alert.alert('Alert', addUserData.message);
-      this.setState({ error: addUserData.message, loading: false });
+      Alert.alert('Alert', addUserData.data);
+      this.setState({ error: addUserData.data, loading: false });
     }
   }
 

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React from 'react';
 import PropTypes from 'prop-types';
+import Moment from 'moment';
 import {
   View,
   StyleSheet,
@@ -28,6 +29,9 @@ class PassDetails extends React.Component {
   }
 
   render() {
+    const from = Moment(`${this.state.data.from}`, 'YYYY-MM-DDTHH:mm:ssZ').format('MMM D YYYY, LT');
+    const to = Moment(`${this.state.data.to}`, 'YYYY-MM-DDTHH:mm:ssZ').format('MMM D YYYY, LT');
+
     return (
       <ScrollView contentContainerStyle={{ justifyContent: 'center', flex: 1 }}>
         <StatusBar
@@ -36,15 +40,19 @@ class PassDetails extends React.Component {
 
         <View style={styles.topContainer}>
           <Text style={styles.title}>
-            {this.state.data.address}
+            {this.state.data.location}
           </Text>
 
           <Text style={styles.subText}>
-            {this.state.data.status}
+            STATUS: PAID
           </Text>
 
           <Text style={styles.subText}>
-            {this.state.data.time}
+            {`Start Time: ${from}`}
+          </Text>
+
+           <Text style={styles.subText}>
+            {`End Time: ${to}`}
           </Text>
         </View>
     </ScrollView>
@@ -63,9 +71,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   subText: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'grey',
-    marginTop: 10,
+    marginTop: 15,
     marginLeft: 10,
   }
 });

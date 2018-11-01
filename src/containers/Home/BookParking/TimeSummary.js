@@ -1,11 +1,17 @@
+import _ from 'lodash';
 import React from 'react';
+import Moment from 'moment';
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
+  AsyncStorage,
+  Alert,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import DatePicker from 'react-native-datepicker';
+import { Loading } from '../../../utils/Loading';
 
 class TimeSummary extends React.Component {
   constructor() {
@@ -15,11 +21,19 @@ class TimeSummary extends React.Component {
       startTime: '',
       endDate: '',
       endTime: '',
+      email: '',
+      loading: false,
     };
   }
 
   componentDidMount() {
     this.setState({ startTime: this.getCurrentTime(), endTime: this.getCurrentTime() })
+
+    AsyncStorage.getItem('email').then((value) => {
+      if (value !== null) {
+        this.setState({ email: value })
+      }
+    })
   }
 
   getCurrentTime() {
@@ -49,9 +63,60 @@ class TimeSummary extends React.Component {
     return fullTime = hour.toString() + ':' + minutes.toString() + ' ' + TimeType.toString();
   }
 
+  onSubmit = () => {
+    const { 
+      bookParking,
+    } = this.props;
+
+    const {
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      email,
+    } = this.state;
+
+    const from = Moment(`${startDate} ${startTime}`, 'MMM D YYYY, LT').format('YYYY-MM-DDTHH:mm:ssZ');
+    const to = Moment(`${endDate} ${endTime}`, 'MMM D YYYY, LT').format('YYYY-MM-DDTHH:mm:ssZ');
+
+    if (_.isEmpty(startDate) ||
+        _.isEmpty(startTime) || 
+        _.isEmpty(endDate) || 
+        _.isEmpty(endTime)
+    ) {
+      Alert.alert('Alert','Please fill all required fields.');
+    } else {
+      this.setState({ loading: true });
+
+      const { params } = this.props.navigation.state;
+      const payload = {
+        email: email,
+        parking_id: params.parkingID,
+        from: from,
+        to: to,
+        location: params.location,
+      };
+      console.log('PAYLOAD--->' + JSON.stringify(payload))
+      bookParking(payload).then(() => {
+        const { bookParkingData } = this.props;
+        if (bookParkingData.error === 0) {
+          this.setState({ loading: false }, () => this.props.navigation.navigate('ConfirmTime'));
+        } else {
+          Alert.alert('Alert', bookParkingData.data);
+          this.setState({ error: bookParkingData.data, loading: false });
+        }
+      });
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
+        {this.state.loading
+          ? (
+            <Loading size={'large'}/>
+          ) : null
+        }
         <View style={styles.topContainer}>
           <Text style={styles.title}>
             Select Date and Time
@@ -67,7 +132,7 @@ class TimeSummary extends React.Component {
                 mode="date"
                 style={[styles.timePickerBox, { marginLeft: 20 }]}
                 placeholder="Today"
-                format={'MMM D'}
+                format={'MMM D YYYY'}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
@@ -162,7 +227,7 @@ class TimeSummary extends React.Component {
                 mode="date"
                 style={[styles.timePickerBox, { marginLeft: 20 }]}
                 placeholder="Today"
-                format={'MMM D'}
+                format={'MMM D YYYY'}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
@@ -248,7 +313,7 @@ class TimeSummary extends React.Component {
           </View>
           <TouchableOpacity
             style={styles.buttonContainer}
-            onPress={() => { this.props.nav.navigate('ConfirmTime') }}
+            onPress={this.onSubmit}
           >
             <Text style={styles.buttonText}> SUBMIT </Text>
           </TouchableOpacity>
@@ -347,4 +412,10 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = TimeSummary;
+TimeSummary.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  bookParking: PropTypes.func.isRequired,
+  bookParkingData: PropTypes.object.isRequired,
+};
+
+export default TimeSummary;

@@ -33,22 +33,21 @@ class ParkingMapView extends React.Component {
       }
     }).done();
     this.getLocationAsync();
-    // this.getAllParkingList();
   }
 
-  getAllParkingList() {
+  async getAllParkingList(location) {
     const { 
       getParkingList,
     } = this.props;
   
     getParkingList().then(() => {
       const { parkingList } = this.props;
-      console.log('GET ALL PARKING--->' + JSON.stringify(parkingList));
       if (parkingList.error === 0) {
-        this.setState({ arrParking: parkingList.data });
+        console.log('PArking List--->' + JSON.stringify(parkingList.data))
+        this.setState({ arrParking: parkingList.data, location });
       } else {
-        Alert.alert('Alert', parkingList.message);
-        this.setState({ error: parkingList.message });
+        Alert.alert('Alert', parkingList.data);
+        this.setState({ error: parkingList.data, location });
       }
     })
   }
@@ -60,7 +59,8 @@ class ParkingMapView extends React.Component {
     }
 
     let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-    this.setState({ location });
+    // this.setState({ location });
+    this.getAllParkingList(location);
   };
 
   onMapPress(e) {
@@ -104,25 +104,37 @@ class ParkingMapView extends React.Component {
                 longitudeDelta: 0.0421,
               }}
             >
-              <MapView.Marker
+              {this.state.arrParking.map((item, i) => {
+                  return (<MapView.Marker
+                    key={i}
+                    coordinate={{
+                      latitude: parseFloat(item.lat),
+                      longitude: parseFloat(item.long),
+                    }}
+                    onPress={() => this.props.navigation.navigate('SelectTime', { parkingID: item.ID, location: item.location })}
+                  >
+                    <CustomMarker lot={`$${item.amount}`} />
+                  </MapView.Marker>)
+              })}
+              {/* <MapView.Marker
                 key={1}
                 coordinate={{
-                  latitude: this.state.location.coords.latitude,
-                  longitude: this.state.location.coords.longitude,
+                  latitude: 1.3142337351723796,
+                  longitude: 103.84271994087733,
                 }}
-                onPress={() => this.props.navigation.navigate('SelectTime')}
+                onPress={() => this.props.navigation.navigate('SelectTime', { parkingID: '2' })}
               >
                 <CustomMarker lot={'$20'} />
-              </MapView.Marker>
-              <MapView.Marker
+              </MapView.Marker> */}
+              {/* <MapView.Marker
                 coordinate={{
                   latitude: this.state.location.coords.latitude + 0.000001,
                   longitude: this.state.location.coords.longitude + 0.01960,
                 }}
-                onPress={() => this.props.navigation.navigate('SelectTime')}
+                onPress={() => this.props.navigation.navigate('SelectTime', { parkingID: '2' })}
               >
                 <CustomMarker lot={'$15'} />
-              </MapView.Marker>
+              </MapView.Marker> */}
             </MapView>
         )
         }

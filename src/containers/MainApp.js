@@ -13,7 +13,7 @@ import Lot123 from '../images/Lot123Vec-IOS.psd';
 import ParkingMapView from './Home/ParkingList/index';
 import ParkingDetailsForm from './Home/AddParking/index';
 import ConfirmationScreen from './Home/ConfirmationScreen';
-import TimeSummaryScreen from './Home/TimeSummary';
+import TimeSummaryScreen from './Home/BookParking/index';
 import SearchScreen from './Search/Search';
 import SettingsScreen from './Settings/Settings';
 import MyVehiclesScreen from './Settings/MyVehicles/VehicleList/index';
@@ -70,7 +70,7 @@ const ParkingLot123Screen = ({ navigation }) => (
 
 // select time screen with select time class component
 const SelectTimeScreen = ({ navigation, timeSelectOpen }) => (
-  <TimeSummaryScreen nav={navigation} />
+  <TimeSummaryScreen navigation={navigation} />
 );
 
 // setting screen example with mynav
