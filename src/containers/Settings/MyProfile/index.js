@@ -10,6 +10,7 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
+  AsyncStorage,
 } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 
@@ -25,6 +26,26 @@ class MyProfile extends React.Component {
       newPassword: '',
       changePwdVisible: false,
     };
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem('email').then((value) => {
+      if (value !== null) {
+        this.setState({ email: value })
+      }
+    })
+
+    AsyncStorage.getItem('full_name').then((value) => {
+      if (value !== null) {
+        this.setState({ fullName: value })
+      }
+    })
+
+    AsyncStorage.getItem('phone_number').then((value) => {
+      if (value !== null) {
+        this.setState({ phoneNumber: value })
+      }
+    })
   }
 
   render() {

@@ -16,12 +16,14 @@ import ConfirmationScreen from './Home/ConfirmationScreen';
 import TimeSummaryScreen from './Home/BookParking/index';
 import SearchScreen from './Search/Search';
 import SettingsScreen from './Settings/Settings';
+import FreeParkingScreen from './Settings/FreeParking';
 import MyVehiclesScreen from './Settings/MyVehicles/VehicleList/index';
 import AddVehicleScreen from './Settings/MyVehicles/AddVehicle/index';
 import PassesScreen from './Settings/Passes/MyBookings/index';
 import MyProfileScreen from './Settings/MyProfile/index';
 import PaymentScreen from './Settings/Payment/index';
 import PassDetailsScreen from './Settings/Passes/PassDetails';
+import BusinessScreen from './Settings/Business/index';
 
 // lot 25 coords
 const lot25 = {
@@ -291,6 +293,28 @@ const SettingsTab = StackNavigator({
     path: '/',
     navigationOptions: (navigation) => ({
       title: 'Details',
+      headerTintColor: 'white',
+      headerStyle: styles.header,
+      headerTitleStyle: styles.headerTitle,
+      headerRight: (<View />),
+    }),
+  },
+  FreeParking: {
+    screen: FreeParkingScreen,
+    path: '/',
+    navigationOptions: (navigation) => ({
+      title: 'Free Parking',
+      headerTintColor: 'white',
+      headerStyle: styles.header,
+      headerTitleStyle: styles.headerTitle,
+      headerRight: (<View />),
+    }),
+  },
+  Business: {
+    screen: BusinessScreen,
+    path: '/',
+    navigationOptions: (navigation) => ({
+      title: 'Business Profile',
       headerTintColor: 'white',
       headerStyle: styles.header,
       headerTitleStyle: styles.headerTitle,

@@ -88,12 +88,12 @@ class Login extends React.Component {
 
   handleSignInResponse(email, routeName) {
     const { user } = this.props;
-    console.log('USERR--->' + JSON.stringify(user));
     if (user.error === 0) {
       AsyncStorage.setItem('email', email);
+      AsyncStorage.setItem('full_name', user.full_name);
+      AsyncStorage.setItem('phone_number', user.phone_number);
       this.setState({ loading: false }, () => this.navigateToHomeScreen(routeName));
     } else {
-      console.log('EROROO--->' + JSON.stringify(user));
       Alert.alert('Alert',user.data);
       this.setState({ error: user.data, loading: false });
     }
@@ -125,20 +125,22 @@ class Login extends React.Component {
 
       if (this.state.userType === 0) {
         addRegisterOwnerUser(payload).then(() => {
-          this.handleSignUpResponse(email, routeName)
+          this.handleSignUpResponse(email, fullName, phoneNumber, routeName)
         });
       } else {
         addFinderUser(payload).then(() => {
-          this.handleSignUpResponse(email, routeName)
+          this.handleSignUpResponse(email, fullName, phoneNumber, routeName)
         });
       }
     }
   };
 
-  handleSignUpResponse(email, routeName) {
+  handleSignUpResponse(email, fullName, phoneNumber, routeName) {
     const { addUserData } = this.props;
     if (addUserData.error === 0) {
       AsyncStorage.setItem('email', email);
+      AsyncStorage.setItem('full_name', fullName);
+      AsyncStorage.setItem('phone_number', phoneNumber);
       this.setState({ loading: false }, () => this.navigateToHomeScreen(routeName));
     } else {
       Alert.alert('Alert', addUserData.data);

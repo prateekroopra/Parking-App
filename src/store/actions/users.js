@@ -17,6 +17,13 @@ export const BOOK_PARKING_ERROR = 'BOOK_PARKING_ERROR';
 export const BOOK_PARKING_SUCCESS = 'BOOK_PARKING_SUCCESS';
 export const GET_USER_BOOKING_ERROR = 'GET_USER_BOOKING_ERROR';
 export const GET_USER_BOOKING_SUCCESS = 'GET_USER_BOOKING_SUCCESS';
+export const ADD_USAEPAY_SUCCESS = 'ADD_USAEPAY_SUCCESS';
+
+let headers = {
+  'User-Agent': 'uelib v6.8',
+  'Content-Type': 'application/json',
+  'Authorization': 'Basic X1Y4N1F0YjUxM0NkM3ZhYk03UkMwVGJ0SldlU284cDc6czIvYWJjZGVmZ2hpamtsbW5vcC9iNzRjMmZhOTFmYjBhMDk3NTVlMzc3ZWU4ZTIwYWE4NmQyYjkyYzNkMmYyNzcyODBkYjU5NWY2MzZiYjE5MGU2'
+};
 
 const addUserError = err => ({
   errorMessage: err,
@@ -106,6 +113,11 @@ const getUserBookingSuccess = bookingList => ({
 const getUserBookingError = err => ({
   errorMessage: err,
   type: GET_USER_BOOKING_ERROR,
+});
+
+const addPaymentSuccess = payment => ({
+  type: ADD_USAEPAY_SUCCESS,
+  payment,
 });
 
 export const addUser = userData => (
@@ -271,4 +283,35 @@ export const getUserBookings = (email) => (
         dispatch(getUserBookingError('could not get user bookings'));
       })
   )
+);
+
+export const addUsaEpay = () => (
+  dispatch => (
+    axios.post(`https://sandbox.usaepay.com/api/v2/transactions`, {
+      'command': 'cc:sale',
+      'amount': "5.00",
+      'amount_detail': {
+          'tax': '1.00',
+          'tip': '0.50',
+      },
+      'creditcard': {
+          'cardholder': 'John doe',
+          'number': '4000100011112224',
+          'expiration': '0919',
+          'cvc': '123',
+          'avs_street': '1234 Main',
+          'avs_zip': '12345'
+      },
+      'invoice': '12356'
+    }, {
+      headers: headers
+    })
+      .then((response) => {
+        console.log('PAYMENT SUCCESS---->' + JSON.stringify(response))
+        dispatch(addPaymentSuccess(response.data));
+      })
+      .catch((error) => {
+        console.log('ERR---->' + JSON.stringify(error))
+      })
+    )
 );
