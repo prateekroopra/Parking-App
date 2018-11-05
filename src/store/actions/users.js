@@ -199,6 +199,7 @@ export const addParking = data => (
       to: data.to,
       lat: data.lat,
       long: data.long,
+      message: data.message,
     })
       .then((response) => {
         dispatch(addParkingSuccess(response.data));

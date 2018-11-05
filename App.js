@@ -2,7 +2,7 @@ import React from 'react';
 import { ScreenOrientation } from 'expo';
 import { Platform } from 'react-native';
 import { Provider } from 'react-redux'
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, SwitchNavigator } from 'react-navigation';
 import store from './src/store'
 import MainApp from './src/containers/MainApp';
 import LogInScreen from './src/containers/Login/index';
@@ -17,7 +17,7 @@ const Routes = {
   },
 };
 
-const AppNavigator = StackNavigator(
+const AppNavigator = SwitchNavigator(
   {
     ...Routes,
     Index: {

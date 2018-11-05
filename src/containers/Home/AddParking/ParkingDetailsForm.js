@@ -37,6 +37,7 @@ class ParkingDetailsForm extends React.Component {
       to: '',
       image: null,
       loading: false,
+      message: '',
     };
   }
 
@@ -87,6 +88,7 @@ class ParkingDetailsForm extends React.Component {
       location,
       from,
       to,
+      message,
     } = this.state;
 
     console.log('ADD PARKING--->' + JSON.stringify(location))
@@ -98,7 +100,8 @@ class ParkingDetailsForm extends React.Component {
         _.isEmpty(address_line) || 
         _.isEmpty(location) || 
         _.isEmpty(from) ||
-        _.isEmpty(to)
+        _.isEmpty(to) ||
+        _.isEmpty(message)
     ) {
       Alert.alert('Alert','Please fill all required fields.');
     } else {
@@ -116,6 +119,7 @@ class ParkingDetailsForm extends React.Component {
         to: to,
         lat: coords.latitude,
         long: coords.longitude,
+        message: message,
       };
       console.log('ADD PARKING--->' + JSON.stringify(payload))
       addParking(payload).then(() => {
@@ -242,7 +246,7 @@ class ParkingDetailsForm extends React.Component {
                   borderTopWidth: 0,
                   borderBottomColor: 'grey',
                   borderBottomWidth: 0.5,
-                  marginTop: 10,
+                  marginTop: 15,
                 },
                 textInput: {
                   marginLeft: -10,
@@ -353,6 +357,17 @@ class ParkingDetailsForm extends React.Component {
               <View style={styles.seperator} />
             </View>
 
+            <TextField
+              label="Message"
+              returnKeyType="next"
+              style={styles.formInput}
+              autoCapitalize="none"
+              autoCorrect={false}
+              underlineColorAndroid="transparent"
+              onChangeText={(message) => { this.setState({ message }) }}
+              value={this.state.message}
+            />
+
             <TouchableOpacity
               style={styles.buttonContainer}
               onPress={this.onSubmit}
@@ -412,7 +427,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   timepickerContainer: {
-    marginTop: 20,
+    marginTop: 30,
   },
 });
 

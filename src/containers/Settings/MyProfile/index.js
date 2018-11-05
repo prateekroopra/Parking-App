@@ -8,7 +8,6 @@ import {
   Text,
   StatusBar,
   ScrollView,
-  TextInput,
   KeyboardAvoidingView,
   AsyncStorage,
 } from 'react-native';

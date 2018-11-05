@@ -110,6 +110,7 @@ class TimeSummary extends React.Component {
   }
 
   render() {
+    const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
         {this.state.loading
@@ -121,6 +122,10 @@ class TimeSummary extends React.Component {
           <Text style={styles.title}>
             Select Date and Time
           </Text>
+
+          <View style={styles.borderContainer}>
+            <Text style={styles.messageTitle}>{params.message}</Text>
+          </View>
 
           <View elevation={2} style={styles.mainContainer}>
             <Text style={styles.subTitle}>START</Text>
@@ -333,6 +338,15 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     marginLeft: 20,
     marginRight: 20,
+  },
+  borderContainer: {
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
+  },
+  messageTitle: {
+    fontSize: 14,
+    padding: 10,
   },
   mainContainer: {
     marginTop: 10,

@@ -16,15 +16,6 @@ import {
 import ParkingDefault from '../../../../images/parking_road.png';
 import { Loading } from '../../../../utils/Loading';
 
-// const data = [
-//   {address: '34 Buswell St, Lawrence, MA', status: 'Paid', time: 'Hours 8:00 am  - 10:00 pm'},
-//   {address: '233 South Broadway, Salem, NH', status: 'Paid', time: 'Hours 11:00 am  - 1:00 pm'},
-//   {address: '233 Broadway, Providence, RI', status: 'Paid', time: 'Hours 8:00 am  - 10:00 pm'},
-//   {address: '34 Buswell St,', status: 'Paid', time: 'Hours 8:00 am  - 10:00 pm'},
-//   {address: '233 Broadway, Providence MA', status: 'Paid', time: 'Hours 8:00 am  - 10:00 pm'},
-//   {address: '233 South Broadway', status: 'Paid', time: 'Hours 8:00 am  - 10:00 pm'},
-// ];
-
 class Passes extends React.Component {
   constructor(props) {
     super(props);
@@ -43,7 +34,6 @@ class Passes extends React.Component {
         this.getAllUserBookings(value);
       }
     })
-    // this.setState({ dataSource: this.state.dataSource.cloneWithRows(data) })
   }
 
   getAllUserBookings(email) {
@@ -52,10 +42,9 @@ class Passes extends React.Component {
     } = this.props;
   
     this.setState({ loading: true });
-    console.log('BOOKING EMAIL--->' + this.state.email);
+
     getUserBookings(email).then(() => {
       const { bookingList } = this.props;
-      console.log('BOOKING LIST--->' + JSON.stringify(bookingList));
       if (bookingList.error === 0) {
         this.setState({ loading: false });
         if(bookingList.data.length > 0) {

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { AsyncStorage, View, Text, Alert } from 'react-native';
 import { MapView, Location, Permissions } from 'expo';
-import Geocoder from 'react-native-geocoding';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import CustomMarker from '../../CustomMarker';
 
@@ -43,7 +42,6 @@ class ParkingMapView extends React.Component {
     getParkingList().then(() => {
       const { parkingList } = this.props;
       if (parkingList.error === 0) {
-        console.log('PArking List--->' + JSON.stringify(parkingList.data))
         this.setState({ arrParking: parkingList.data, location });
       } else {
         Alert.alert('Alert', parkingList.data);
@@ -59,7 +57,6 @@ class ParkingMapView extends React.Component {
     }
 
     let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-    // this.setState({ location });
     this.getAllParkingList(location);
   };
 
@@ -76,12 +73,9 @@ class ParkingMapView extends React.Component {
         ? (
             <MapView
               key={ this.state.searchLocation !== undefined ? this.state.searchLocation.lat : this.state.location.coords.latitude}
-              // key={this.state.location.coords.latitude}
               style={{ flex: 1 }}
               onPress={(e) => this.onMapPress(e)}
               region={{
-                // latitude: this.state.location.coords.latitude,
-                // longitude: this.state.location.coords.longitude,
                 latitude: this.state.searchLocation !== undefined ? this.state.searchLocation.lat : this.state.location.coords.latitude,
                 longitude: this.state.searchLocation !== undefined ? this.state.searchLocation.lng : this.state.location.coords.longitude,
                 latitudeDelta: 0.0922,
@@ -98,7 +92,6 @@ class ParkingMapView extends React.Component {
         ) : (
             <MapView
               key={ this.state.searchLocation !== undefined ? this.state.searchLocation.lat : this.state.location.coords.latitude}
-              // provider={MapView.PROVIDER_GOOGLE}
               style={{ flex: 1 }}
               initialRegion={{
                 latitude: this.state.searchLocation !== undefined ? this.state.searchLocation.lat : this.state.location.coords.latitude,
@@ -114,30 +107,11 @@ class ParkingMapView extends React.Component {
                       latitude: parseFloat(item.lat),
                       longitude: parseFloat(item.long),
                     }}
-                    onPress={() => this.props.navigation.navigate('SelectTime', { parkingID: item.ID, location: item.location })}
+                    onPress={() => this.props.navigation.navigate('SelectTime', { parkingID: item.ID, location: item.location, message: item.message })}
                   >
                     <CustomMarker lot={`$${item.amount}`} />
                   </MapView.Marker>)
               })}
-              {/* <MapView.Marker
-                key={1}
-                coordinate={{
-                  latitude: 1.3142337351723796,
-                  longitude: 103.84271994087733,
-                }}
-                onPress={() => this.props.navigation.navigate('SelectTime', { parkingID: '2' })}
-              >
-                <CustomMarker lot={'$20'} />
-              </MapView.Marker> */}
-              {/* <MapView.Marker
-                coordinate={{
-                  latitude: this.state.location.coords.latitude + 0.000001,
-                  longitude: this.state.location.coords.longitude + 0.01960,
-                }}
-                onPress={() => this.props.navigation.navigate('SelectTime', { parkingID: '2' })}
-              >
-                <CustomMarker lot={'$15'} />
-              </MapView.Marker> */}
             </MapView>
         )
         }
@@ -151,7 +125,6 @@ class ParkingMapView extends React.Component {
             listViewDisplayed={false}
             renderDescription={row => row.description}
             onPress={(data, details = null) => {
-              console.log('DETAILS---->' + JSON.stringify(details));
               if (details && details.geometry && details.geometry.location) {
                 this.setState({ searchLocation: details.geometry.location })
               }
