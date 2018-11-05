@@ -227,7 +227,7 @@ class ParkingDetailsForm extends React.Component {
               query={{
                 key: 'AIzaSyCYQHauEaqFsGItbv4ZyHBGWm2FDxsF2nQ',
                 language: 'en',
-                types: '(cities)'
+                // types: '(cities)'
               }}
               styles={{
                 listView: {

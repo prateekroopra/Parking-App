@@ -75,12 +75,15 @@ class ParkingMapView extends React.Component {
         {this.state.userType != undefined && this.state.userType === 'Parking Owner'
         ? (
             <MapView
-              key={this.state.location.coords.latitude}
+              key={ this.state.searchLocation !== undefined ? this.state.searchLocation.lat : this.state.location.coords.latitude}
+              // key={this.state.location.coords.latitude}
               style={{ flex: 1 }}
               onPress={(e) => this.onMapPress(e)}
               region={{
-                latitude: this.state.location.coords.latitude,
-                longitude: this.state.location.coords.longitude,
+                // latitude: this.state.location.coords.latitude,
+                // longitude: this.state.location.coords.longitude,
+                latitude: this.state.searchLocation !== undefined ? this.state.searchLocation.lat : this.state.location.coords.latitude,
+                longitude: this.state.searchLocation !== undefined ? this.state.searchLocation.lng : this.state.location.coords.longitude,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421
               }}
@@ -148,6 +151,7 @@ class ParkingMapView extends React.Component {
             listViewDisplayed={false}
             renderDescription={row => row.description}
             onPress={(data, details = null) => {
+              console.log('DETAILS---->' + JSON.stringify(details));
               if (details && details.geometry && details.geometry.location) {
                 this.setState({ searchLocation: details.geometry.location })
               }
@@ -156,7 +160,7 @@ class ParkingMapView extends React.Component {
             query={{
               key: 'AIzaSyCYQHauEaqFsGItbv4ZyHBGWm2FDxsF2nQ',
               language: 'en',
-              types: '(cities)'
+              // types: '(cities)'
             }}
             styles={{
               container: {
