@@ -1,8 +1,9 @@
 {
   "expo": {
-    "sdkVersion": "24.0.0",
+    "sdkVersion": "25.0.0",
     "android": {
-      "package": "com.prateek.parkingapp",
+      "package": "com.sw.parkinsafe",
+      "versionCode": 2,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCtD33I4m9BDpqKnJe8qJ4lNmTKVXYc3RI"

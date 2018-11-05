@@ -1,6 +1,6 @@
 {
   "name": "Parking-App",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "devDependencies": {
     "jest-expo": "^22.0.0",
@@ -20,12 +20,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "expo": "^24.0.0",
+    "expo": "^25.0.0",
     "moment": "^2.22.2",
     "native-base": "^2.8.0",
     "prop-types": "^15.6.2",
     "react": "16.0.0-beta.5",
-    "react-native": "^0.51.0",
+    "react-native": "^0.52.0",
     "react-native-datepicker": "^1.7.2",
     "react-native-floating-action": "^1.13.0",
     "react-native-geocoding": "^0.3.0",
