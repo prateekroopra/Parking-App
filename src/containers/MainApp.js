@@ -351,20 +351,20 @@ const MainApp = TabNavigator(
         ),
       },
     },
-    SearchTab: {
-      screen: SearchTab,
-      path: '/search',
-      navigationOptions: {
-        tabBarLabel: 'Search',
-        tabBarIcon: ({ tintColor, focused }) => (
-          <Ionicons
-            name={focused ? 'ios-search' : 'ios-search-outline'}
-            size={26}
-            style={{ color: tintColor }}
-          />
-        ),
-      },
-    },
+    // SearchTab: {
+    //   screen: SearchTab,
+    //   path: '/search',
+    //   navigationOptions: {
+    //     tabBarLabel: 'Search',
+    //     tabBarIcon: ({ tintColor, focused }) => (
+    //       <Ionicons
+    //         name={focused ? 'ios-search' : 'ios-search-outline'}
+    //         size={26}
+    //         style={{ color: tintColor }}
+    //       />
+    //     ),
+    //   },
+    // },
     SettingsTab: {
       screen: SettingsTab,
       path: '/settings',
