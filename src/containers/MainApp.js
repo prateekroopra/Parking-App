@@ -24,6 +24,7 @@ import MyProfileScreen from './Settings/MyProfile/index';
 import PaymentScreen from './Settings/Payment/index';
 import PassDetailsScreen from './Settings/Passes/PassDetails';
 import BusinessScreen from './Settings/Business/index';
+import RentalScreen from './Settings/Rental/index';
 
 // lot 25 coords
 const lot25 = {
@@ -321,6 +322,17 @@ const SettingsTab = StackNavigator({
       headerRight: (<View />),
     }),
   },
+  Rental: {
+    screen: RentalScreen,
+    path: '/',
+    navigationOptions: (navigation) => ({
+      title: 'Rental',
+      headerTintColor: 'white',
+      headerStyle: styles.header,
+      headerTitleStyle: styles.headerTitle,
+      headerRight: (<View />),
+    }),
+  },
 });
 
 const MainApp = TabNavigator(
@@ -378,8 +390,8 @@ const MainApp = TabNavigator(
 const styles = StyleSheet.create({
   header: {
     backgroundColor: 'rgba(25, 73, 165, 1)',
-    height: Platform.OS === 'android' ? Constants.statusBarHeight + 56 : 44,
-    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
+    height: Platform.OS === 'android' ? 56 : 44,
+    // paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight,
   },
   headerTitle: {
     // color: 'white'

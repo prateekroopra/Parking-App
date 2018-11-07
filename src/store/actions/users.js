@@ -18,6 +18,8 @@ export const BOOK_PARKING_SUCCESS = 'BOOK_PARKING_SUCCESS';
 export const GET_USER_BOOKING_ERROR = 'GET_USER_BOOKING_ERROR';
 export const GET_USER_BOOKING_SUCCESS = 'GET_USER_BOOKING_SUCCESS';
 export const ADD_USAEPAY_SUCCESS = 'ADD_USAEPAY_SUCCESS';
+export const GET_OWNER_PARKING_LIST_ERROR = 'GET_OWNER_PARKING_LIST_ERROR';
+export const GET_OWNER_PARKING_LIST_SUCCESS = 'GET_OWNER_PARKING_LIST_SUCCESS';
 
 let headers = {
   'User-Agent': 'uelib v6.8',
@@ -120,6 +122,16 @@ const addPaymentSuccess = payment => ({
   payment,
 });
 
+const getOwnerParkingSuccess = ownerParkingList => ({
+  type: GET_OWNER_PARKING_LIST_SUCCESS,
+  ownerParkingList,
+});
+
+const getOwnerParkingError = err => ({
+  errorMessage: err,
+  type: GET_OWNER_PARKING_LIST_ERROR,
+});
+
 export const addUser = userData => (
   dispatch => (
     axios.post(`${apiBaseURL}/register`, {
@@ -200,8 +212,10 @@ export const addParking = data => (
       lat: data.lat,
       long: data.long,
       message: data.message,
+      owner: data.email,
     })
       .then((response) => {
+        console.log('RESPONSE ADD --->' + JSON.stringify(response.data));
         dispatch(addParkingSuccess(response.data));
       })
       .catch(() => {
@@ -315,4 +329,19 @@ export const addUsaEpay = () => (
         console.log('ERR---->' + JSON.stringify(error))
       })
     )
+);
+
+export const getOwnerParking = (email) => (
+  dispatch => (
+    axios.get(`${apiBaseURL}/getParkingByOwner?ID=${email}`, {
+    })
+      .then((response) => {
+        console.log('OWNER SCCESS--->' + JSON.stringify(response));
+        dispatch(getOwnerParkingSuccess(response.data));
+      })
+      .catch((error) => {
+        console.log('OWNER ERRO--->' + JSON.stringify(error));
+        dispatch(getOwnerParkingError('could not get owners parking list'));
+      })
+  )
 );

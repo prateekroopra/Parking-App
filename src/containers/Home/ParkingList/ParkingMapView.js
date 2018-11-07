@@ -78,16 +78,27 @@ class ParkingMapView extends React.Component {
               region={{
                 latitude: this.state.searchLocation !== undefined ? this.state.searchLocation.lat : this.state.location.coords.latitude,
                 longitude: this.state.searchLocation !== undefined ? this.state.searchLocation.lng : this.state.location.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
+                latitudeDelta: 0.006,
+                longitudeDelta: 0.006
               }}
             >
-              <MapView.Marker
-                onPress={() => this.props.navigation.navigate('ParkingDetailsForm', { coords: this.state.coordinate })}
-                coordinate={this.state.coordinate}
-              >
-                <CustomMarker lot={'Add Parking Spot'} />
-              </MapView.Marker>
+              {this.state.searchLocation !== undefined 
+                ? (
+                  <MapView.Marker
+                    onPress={() => this.props.navigation.navigate('ParkingDetailsForm', { coords: {latitude: this.state.searchLocation.lat, longitude:  this.state.searchLocation.lng }})}
+                    coordinate={{latitude: this.state.searchLocation.lat, longitude:  this.state.searchLocation.lng }}
+                  >
+                    <CustomMarker lot={'Add Parking Spot'} />
+                  </MapView.Marker>
+                ) : (
+                  <MapView.Marker
+                    onPress={() => this.props.navigation.navigate('ParkingDetailsForm', { coords: this.state.coordinate })}
+                    coordinate={this.state.coordinate}
+                  >
+                    <CustomMarker lot={'Add Parking Spot'} />
+                  </MapView.Marker>
+                )
+              }
             </MapView>
         ) : (
             <MapView

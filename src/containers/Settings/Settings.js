@@ -84,6 +84,26 @@ class Settings extends React.Component {
             </View>
           </TouchableOpacity>
         </View>
+
+        {this.state.userType === 'Parking Owner' &&
+          <View elevation={2} style={styles.cardView}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => { this.props.navigation.navigate('Rental'); }}
+            >
+              <Image
+                style={styles.icon}
+                source={Vehicle}
+              />
+
+              <View style={styles.textContainer}>
+                <Text style={styles.buttonText}>
+                  RENTAL
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        }
             
         {this.state.userType === 'Parking Finder' &&
         <View>

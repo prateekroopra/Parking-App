@@ -140,6 +140,7 @@ class TimeSummary extends React.Component {
                 format={'MMM D YYYY'}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
+                androidMode='spinner'
                 showIcon={false}
                 customStyles={{
                   dateInput: {
@@ -182,6 +183,7 @@ class TimeSummary extends React.Component {
                 mode="time"
                 style={styles.timePickerBox}
                 placeholder="Time"
+                androidMode='spinner'
                 format={'LT'}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
@@ -230,6 +232,7 @@ class TimeSummary extends React.Component {
                 ref={(datepicker) => { this.endDate = datepicker; }}
                 date={this.state.endDate}
                 mode="date"
+                androidMode='spinner'
                 style={[styles.timePickerBox, { marginLeft: 20 }]}
                 placeholder="Today"
                 format={'MMM D YYYY'}
@@ -275,6 +278,7 @@ class TimeSummary extends React.Component {
                 ref={(datepicker) => { this.endTime = datepicker; }}
                 date={this.state.endTime}
                 mode="time"
+                androidMode='spinner'
                 style={styles.timePickerBox}
                 placeholder="Time"
                 format={'LT'}

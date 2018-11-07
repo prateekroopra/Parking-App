@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   Image,
   Alert,
+  AsyncStorage,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { ImagePicker } from 'expo';
@@ -38,10 +39,17 @@ class ParkingDetailsForm extends React.Component {
       image: null,
       loading: false,
       message: '',
+      email: '',
     };
   }
 
   componentDidMount() {
+    AsyncStorage.getItem('email').then((value) => {
+      if (value !== null) {
+        this.setState({ email: value })
+      }
+    })
+
     const { params } = this.props.navigation.state;
     const coords = params ? params.coords : undefined;
 
@@ -89,6 +97,7 @@ class ParkingDetailsForm extends React.Component {
       from,
       to,
       message,
+      email,
     } = this.state;
 
     console.log('ADD PARKING--->' + JSON.stringify(location))
@@ -120,6 +129,7 @@ class ParkingDetailsForm extends React.Component {
         lat: coords.latitude,
         long: coords.longitude,
         message: message,
+        email: email,
       };
       console.log('ADD PARKING--->' + JSON.stringify(payload))
       addParking(payload).then(() => {
@@ -136,7 +146,7 @@ class ParkingDetailsForm extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={20} style={styles.container}>
         <StatusBar
           barStyle="light-content"
         />
@@ -281,6 +291,7 @@ class ParkingDetailsForm extends React.Component {
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
+                androidMode='spinner'
                 customStyles={{
                   dateInput: {
                     borderColor: 'transparent',
@@ -325,6 +336,7 @@ class ParkingDetailsForm extends React.Component {
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
+                androidMode='spinner'
                 customStyles={{
                   dateInput: {
                     borderColor: 'transparent',

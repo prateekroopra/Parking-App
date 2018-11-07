@@ -16,7 +16,9 @@ import {
   BOOK_PARKING_SUCCESS,
   GET_USER_BOOKING_ERROR,
   GET_USER_BOOKING_SUCCESS,
-  ADD_USAEPAY_SUCCESS
+  ADD_USAEPAY_SUCCESS,
+  GET_OWNER_PARKING_LIST_SUCCESS,
+  GET_OWNER_PARKING_LIST_ERROR,
 } from "../actions/users";
 
 const users = (
@@ -31,6 +33,7 @@ const users = (
     bookParking: {},
     bookingList: [],
     payment: {},
+    ownerParkingList: [],
   },
   action
 ) => {
@@ -102,6 +105,14 @@ const users = (
     case ADD_USAEPAY_SUCCESS:
       return _.assign({}, state, {
         payment: action.payment
+      });
+    case GET_OWNER_PARKING_LIST_ERROR:
+      return _.assign({}, state, {
+        errorMessage: action.errorMessage
+      });
+    case GET_OWNER_PARKING_LIST_SUCCESS:
+      return _.assign({}, state, {
+        ownerParkingList: action.ownerParkingList
       });
     default:
       return state;
