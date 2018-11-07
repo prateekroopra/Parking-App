@@ -44,7 +44,7 @@ class Rental extends React.Component {
           if (ownerParkingList.error === 0) {
             this.setState({ loading: false });
             if(ownerParkingList.data.length > 0) {
-              // this.setState({ dataSource: this.state.dataSource.cloneWithRows(ownerParkingList.data), defaultView: false })
+               this.setState({ dataSource: this.state.dataSource.cloneWithRows(ownerParkingList.data), defaultView: false })
             } else {
               this.setState({ defaultView: true })
             }
