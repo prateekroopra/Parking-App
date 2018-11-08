@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AsyncStorage, View, Text, Alert } from 'react-native';
+import { StyleSheet, AsyncStorage, View, Text, Alert, TouchableOpacity, Image } from 'react-native';
 import { MapView, Location, Permissions } from 'expo';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import CustomMarker from '../../CustomMarker';
@@ -66,6 +66,11 @@ class ParkingMapView extends React.Component {
     });
   }
 
+  _animateToCurrentLocation = async () => {
+    this.setState({ searchLocation: undefined })
+    this.getLocationAsync();
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -81,6 +86,10 @@ class ParkingMapView extends React.Component {
                 latitudeDelta: 0.006,
                 longitudeDelta: 0.006
               }}
+              // showsUserLocation={true}
+              // followsUserLocation={true}
+              // minZoomLevel={20.0}
+              // showsMyLocationButton={true}
             >
               {this.state.searchLocation !== undefined 
                 ? (
@@ -181,10 +190,39 @@ class ParkingMapView extends React.Component {
             debounce={200}
           />
         </View>
+
+        <View style={styles.mapCurrentLocationContainer}>
+          <TouchableOpacity onPress={() => this._animateToCurrentLocation()}>
+              <View style={styles.mapInnerContainer}>
+                  <Image style={styles.gpsIcon} source={require('../../../images/gps.png')}/>
+              </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  mapCurrentLocationContainer: {
+    bottom: 10,
+    right: 10,
+    position: 'absolute',
+    flex: 1,
+  },
+  mapInnerContainer: {
+      backgroundColor: 'white',
+      height: 60,
+      width: 60, 
+      borderRadius: 30, 
+      justifyContent: 'center', 
+      alignItems: 'center',
+  },
+  gpsIcon: {
+      width: 25, 
+      height: 25,
+  },
+})
 
 ParkingMapView.propTypes = {
   navigation: PropTypes.object.isRequired,

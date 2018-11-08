@@ -291,7 +291,7 @@ class ParkingDetailsForm extends React.Component {
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
-                androidMode='spinner'
+                // androidMode='spinner'
                 customStyles={{
                   dateInput: {
                     borderColor: 'transparent',
@@ -336,7 +336,7 @@ class ParkingDetailsForm extends React.Component {
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 showIcon={false}
-                androidMode='spinner'
+                // androidMode='spinner'
                 customStyles={{
                   dateInput: {
                     borderColor: 'transparent',
