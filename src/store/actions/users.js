@@ -7,6 +7,8 @@ export const SIGNIN_ERROR = 'SIGNIN_ERROR';
 export const SIGNIN_SUCCESS = 'SIGNIN_SUCCESS';
 export const ADD_PARKING_ERROR = 'ADD_PARKING_ERROR';
 export const ADD_PARKING_SUCCESS = 'ADD_PARKING_SUCCESS';
+export const EDIT_PARKING_ERROR = 'EDIT_PARKING_ERROR';
+export const EDIT_PARKING_SUCCESS = 'EDIT_PARKING_SUCCESS';
 export const GET_PARKING_LIST_SUCCESS = 'GET_PARKING_LIST_SUCCESS';
 export const GET_PARKING_LIST_ERROR = 'GET_PARKING_LIST_ERROR';
 export const ADD_VEHICLE_ERROR = 'ADD_VEHICLE_ERROR';
@@ -54,6 +56,16 @@ const addParkingError = err => ({
 
 const addParkingSuccess = parking => ({
   type: ADD_PARKING_SUCCESS,
+  parking,
+});
+
+const editParkingError = err => ({
+  errorMessage: err,
+  type: EDIT_PARKING_ERROR,
+});
+
+const editParkingSuccess = parking => ({
+  type: EDIT_PARKING_SUCCESS,
   parking,
 });
 
@@ -220,6 +232,32 @@ export const addParking = data => (
       })
       .catch(() => {
         dispatch(addParkingError('Error while adding parking details'));
+      })
+  )
+);
+
+export const editParking = data => (
+  dispatch => (
+    axios.put(`${apiBaseURL}/UpdateParking?ID=${data.id}`, {
+      name: data.name,
+      description: data.description,
+      phone_number: data.phone_number,
+      amount: data.amount,
+      address_line1: data.address_line1,
+      location: data.location,
+      from: data.from,
+      to: data.to,
+      lat: data.lat,
+      long: data.long,
+      message: data.message,
+      owner: data.email,
+    })
+      .then((response) => {
+        console.log('RESPONSE EDIT --->' + JSON.stringify(response.data));
+        dispatch(editParkingSuccess(response.data));
+      })
+      .catch(() => {
+        dispatch(editParkingError('Error while edit parking details'));
       })
   )
 );

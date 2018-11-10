@@ -333,6 +333,17 @@ const SettingsTab = StackNavigator({
       headerRight: (<View />),
     }),
   },
+  EditParking: {
+    screen: ParkingDetailsForm,
+    path: '/ParkingDetailsForm',
+    navigationOptions: ({ navigation }) => ({
+      title: `Parking Details`,
+      headerTintColor: 'white',
+      headerStyle: styles.header,
+      headerTitleStyle: styles.headerTitle,
+      headerRight: (<View />),
+    }),
+  },
 });
 
 const MainApp = TabNavigator(

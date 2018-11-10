@@ -51,14 +51,32 @@ class ParkingDetailsForm extends React.Component {
     })
 
     const { params } = this.props.navigation.state;
-    const coords = params ? params.coords : undefined;
+    const fromEdit = params ? params.fromEdit : false;
 
-    Geocoder.from(coords.latitude, coords.longitude)
-    .then(json => {
-      var addressComponent = json.results[0].formatted_address;
-        this.setState({ location: addressComponent });
-    })
-    .catch(error => console.log(error));
+    if (fromEdit === false || fromEdit === undefined) {
+      const coords = params ? params.coords : undefined;
+
+      Geocoder.from(coords.latitude, coords.longitude)
+      .then(json => {
+        var addressComponent = json.results[0].formatted_address;
+          this.setState({ location: addressComponent });
+      })
+      .catch(error => console.log(error));
+    } else {
+      const data = params ? params.parkingData : undefined;
+      console.log('FROM AMOUNT--->' + data.amount);
+      this.setState({
+        name: data.name,
+        description: data.description,
+        phoneNumber: data.phone_number,
+        amount: String(data.amount),
+        address_line: data.address_line1,
+        location: data.location,
+        from: data.from,
+        to: data.to,
+        message: data.message,
+      })
+    }
   }
 
   onFromTimeChange(time) {
@@ -85,6 +103,7 @@ class ParkingDetailsForm extends React.Component {
   onSubmit = () => {
     const { 
       addParking,
+      editParking,
     } = this.props;
 
     const {
@@ -114,33 +133,72 @@ class ParkingDetailsForm extends React.Component {
     ) {
       Alert.alert('Alert','Please fill all required fields.');
     } else {
-      this.setState({ loading: true });
+      // this.setState({ loading: true });
       const { params } = this.props.navigation.state;
-      const coords = params ? params.coords : undefined;
-      const payload = {
-        name: name,
-        description: description,
-        phone_number: phoneNumber,
-        amount: amount,
-        address_line1: address_line,
-        location: location,
-        from: from,
-        to: to,
-        lat: coords.latitude,
-        long: coords.longitude,
-        message: message,
-        email: email,
-      };
-      console.log('ADD PARKING--->' + JSON.stringify(payload))
-      addParking(payload).then(() => {
-        const { parking } = this.props;
-        if (parking.error === 0) {
-          this.setState({ loading: false }, () => this.props.navigation.navigate('ConfirmationScreen'));
-        } else {
-          Alert.alert('Alert', parking.data);
-          this.setState({ error: parking.data, loading: false });
-        }
-      });
+
+      const fromEdit = params ? params.fromEdit : false;
+
+      if (fromEdit == false || fromEdit === undefined) {
+        const coords = params ? params.coords : undefined;
+        const payload = {
+          name: name,
+          description: description,
+          phone_number: phoneNumber,
+          amount: amount,
+          address_line1: address_line,
+          location: location,
+          from: from,
+          to: to,
+          lat: coords.latitude,
+          long: coords.longitude,
+          message: message,
+          email: email,
+        };
+        console.log('ADD PARKING--->' + JSON.stringify(payload))
+        addParking(payload).then(() => {
+          const { parking } = this.props;
+          if (parking.error === 0) {
+            this.props.navigation.navigate('ConfirmationScreen')
+            // this.setState({ loading: false }, () => this.props.navigation.navigate('ConfirmationScreen'));
+          } else {
+            Alert.alert('Alert', parking.data);
+            this.setState({ error: parking.data, loading: false });
+          }
+        });
+      } else {
+        const data = params ? params.parkingData : undefined;
+        const payload = {
+          name: name,
+          description: description,
+          phone_number: phoneNumber,
+          amount: amount,
+          address_line1: address_line,
+          location: location,
+          from: from,
+          to: to,
+          lat: data.lat,
+          long: data.long,
+          message: message,
+          email: email,
+          id: data.ID,
+        };
+        console.log('EDIT PARKING--->' + JSON.stringify(payload))
+        editParking(payload).then(() => {
+          const { editParkingData } = this.props;
+          console.log('EDIT PARKING PROPS--->' + JSON.stringify(editParkingData))
+          if (editParkingData.error === 0) {
+            // this.setState({ loading: false }, () => {
+              if (this.props.navigation.state.params.returnData !== undefined) {
+                this.props.navigation.state.params.returnData();
+              }
+              this.props.navigation.goBack()
+            // });
+          } else {
+            Alert.alert('Alert', editParkingData.data);
+            this.setState({ error: editParkingData.data, loading: false });
+          }
+        });
+      }
     }
   }
 
@@ -409,7 +467,7 @@ const styles = StyleSheet.create({
     height: 120,
   },
   formInput: {
-    fontSize: 18,
+    fontSize: 16,
   },
   formInner: {
     padding: 20,
@@ -446,6 +504,8 @@ const styles = StyleSheet.create({
 ParkingDetailsForm.propTypes = {
   addParking: PropTypes.func.isRequired,
   parking: PropTypes.object.isRequired,
+  EditParking: PropTypes.func.isRequired,
+  editParkingData: PropTypes.object.isRequired,
 };
 
 export default ParkingDetailsForm;

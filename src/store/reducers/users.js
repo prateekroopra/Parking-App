@@ -6,6 +6,8 @@ import {
   SIGNIN_SUCCESS,
   ADD_PARKING_ERROR,
   ADD_PARKING_SUCCESS,
+  EDIT_PARKING_ERROR,
+  EDIT_PARKING_SUCCESS,
   GET_PARKING_LIST_SUCCESS,
   GET_PARKING_LIST_ERROR,
   ADD_VEHICLE_ERROR,
@@ -27,6 +29,7 @@ const users = (
     loginUserData: {},
     errorMessage: "",
     parking: {},
+    editParking: {},
     parkingList: {},
     vehicle: {},
     VehicleList: [],
@@ -61,6 +64,14 @@ const users = (
     case ADD_PARKING_SUCCESS:
       return _.assign({}, state, {
         parking: action.parking
+      });
+    case EDIT_PARKING_ERROR:
+      return _.assign({}, state, {
+        errorMessage: action.errorMessage
+      });
+    case EDIT_PARKING_SUCCESS:
+      return _.assign({}, state, {
+        editParking: action.parking
       });
     case GET_PARKING_LIST_ERROR:
       return _.assign({}, state, {

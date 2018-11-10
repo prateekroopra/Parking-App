@@ -138,7 +138,7 @@ class ParkingMapView extends React.Component {
 
         <View style={{ position: 'absolute', width: '100%' }}>
           <GooglePlacesAutocomplete
-            placeholder='Location'
+            placeholder='Start by Searching Here'
             autoFocus={false}
             returnKeyType={'search'}
             fetchDetails={true}

@@ -6,7 +6,7 @@ class Search extends React.Component {
   render() {
     return (
       <GooglePlacesAutocomplete
-        placeholder='Location'
+        placeholder='Start by Searching Here'
         autoFocus={false}
         returnKeyType={'default'}
         fetchDetails={true}

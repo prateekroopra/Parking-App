@@ -11,8 +11,10 @@ import {
   ScrollView,
   ListView,
   Alert,
+  Image,
 } from 'react-native';
 import { Loading } from '../../../utils/Loading';
+import Edit from '../../../images/edit.png';
 
 class Rental extends React.Component {
   constructor(props) {
@@ -60,14 +62,25 @@ class Rental extends React.Component {
   renderGridItem(rowdata) {
     return (
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => { 
+          this.props.navigation.navigate('EditParking', { fromEdit: true, parkingData: rowdata, returnData: this.getParkingList.bind(this) })
+        }}
         activeOpacity={1}
       >
         <View elevation={2} style={styles.row}>
-          <Text style={{ fontSize: 16 }}>{rowdata.location}</Text>
-          <Text style={{ fontSize: 16 }}>{rowdata.from}</Text>
-          <Text style={{ fontSize: 16 }}>{rowdata.to}</Text>
-          <Text style={{ fontSize: 16, marginTop: 5 }}>{rowdata.message}</Text>
+          <View style={styles.leftContainer}>
+            <Text style={styles.textxtMessage}>{rowdata.location}</Text>
+            <Text style={styles.txtMessage}>{rowdata.from}</Text>
+            <Text style={styles.txtMessage}>{rowdata.to}</Text>
+            <Text style={styles.txtMessage}>{rowdata.message}</Text>
+          </View>
+          
+          <View style={styles.image}>
+            <Image
+              style={styles.icon}
+              source={Edit}
+            />
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -113,12 +126,36 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: '100%',
   },
+  icon: {
+    width: 20,
+    height: 20, 
+    marginRight: 5,
+  },
+  leftContainer :{
+    marginRight: 5,
+  },
+  txtMessage: {
+    fontSize: 16,
+    marginTop: 10,
+  },
   row: {
     marginTop: 10,
     marginLeft: 10,
     marginRight: 10,
     backgroundColor: '#fff',
     padding: 20,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: '#d6d7da',
+    flex: 1,
+    flexDirection: 'row',
+  },
+  image: {
+    marginRight: 10,
+    position: 'absolute',
+    right: 0,
+    display: 'flex',
+    marginTop: 10,
   },
   topContainer: {
     justifyContent: 'center',
