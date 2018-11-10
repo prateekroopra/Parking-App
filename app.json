@@ -3,7 +3,7 @@
     "sdkVersion": "25.0.0",
     "android": {
       "package": "com.sw.parkinsafe",
-      "versionCode": 3,
+      "versionCode": 4,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCtD33I4m9BDpqKnJe8qJ4lNmTKVXYc3RI"
