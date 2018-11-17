@@ -19,6 +19,7 @@ class Search extends React.Component {
         query={{
           key: 'AIzaSyCYQHauEaqFsGItbv4ZyHBGWm2FDxsF2nQ',
           language: 'en',
+          components: 'country:us'
           // types: '(cities)'
         }}
         styles={{

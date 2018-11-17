@@ -25,6 +25,7 @@ import PaymentScreen from './Settings/Payment/index';
 import PassDetailsScreen from './Settings/Passes/PassDetails';
 import BusinessScreen from './Settings/Business/index';
 import RentalScreen from './Settings/Rental/index';
+import PermitScreen from './Permit/index';
 
 // lot 25 coords
 const lot25 = {
@@ -208,12 +209,12 @@ const MainTab = StackNavigator({
   },
 });
 
-const SearchTab = StackNavigator({
-  Settings: {
-    screen: MySearchScreen,
+const PermitTab = StackNavigator({
+  Permit: {
+    screen: PermitScreen,
     path: '/',
     navigationOptions: () => ({
-      title: 'Search',
+      title: 'Permit',
       headerStyle: styles.header,
       headerTitleStyle: styles.headerTitle,
       headerLeft: (<View />),
@@ -351,7 +352,7 @@ const MainApp = TabNavigator(
     MainTab: {
       screen: MainTab,
       path: '/',
-      navigationOptions: {
+      navigationOptions: navigation => ({
         tabBarLabel: 'Home',
         tabBarIcon: ({ tintColor, focused }) => (
           <Ionicons
@@ -360,22 +361,32 @@ const MainApp = TabNavigator(
             style={{ color: tintColor }}
           />
         ),
+        // tabBarOnPress: ({ scene, jumpToIndex }) => {
+        //   alert('ddd')
+        //   navigation.dispatch(NavigationActions.reset(
+        //     {
+        //       index: 0,
+        //       actions: [
+        //         NavigationActions.navigate({ routeName: 'Home' })
+        //       ]
+        //     }))
+        // },
+      }),
+    },
+    PermitTab: {
+      screen: PermitTab,
+      path: '/',
+      navigationOptions: {
+        tabBarLabel: 'Permit',
+        tabBarIcon: ({ tintColor, focused }) => (
+          <Ionicons
+            name={focused ? 'ios-search' : 'ios-search-outline'}
+            size={26}
+            style={{ color: tintColor }}
+          />
+        ),
       },
     },
-    // SearchTab: {
-    //   screen: SearchTab,
-    //   path: '/search',
-    //   navigationOptions: {
-    //     tabBarLabel: 'Search',
-    //     tabBarIcon: ({ tintColor, focused }) => (
-    //       <Ionicons
-    //         name={focused ? 'ios-search' : 'ios-search-outline'}
-    //         size={26}
-    //         style={{ color: tintColor }}
-    //       />
-    //     ),
-    //   },
-    // },
     SettingsTab: {
       screen: SettingsTab,
       path: '/settings',
