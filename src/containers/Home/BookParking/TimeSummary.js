@@ -84,7 +84,7 @@ class TimeSummary extends React.Component {
         _.isEmpty(endDate) || 
         _.isEmpty(endTime)
     ) {
-      Alert.alert('Alert','Please fill all required fields.');
+      Alert.alert('Alert','Please select both date and time.');
     } else {
       this.setState({ loading: true });
 
@@ -136,7 +136,7 @@ class TimeSummary extends React.Component {
                 date={this.state.startDate}
                 mode="date"
                 style={[styles.timePickerBox, { marginLeft: 20 }]}
-                placeholder="Today"
+                placeholder="Select Date"
                 format={'MMM D YYYY'}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
@@ -164,11 +164,11 @@ class TimeSummary extends React.Component {
                     alignItems: 'center',
                     color: 'blue',
                     fontWeight: 'bold',
-                    fontSize: 18,
+                    fontSize: 14,
                   },
                   placeholderText: {
                     color: 'blue',
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: 'bold',
                   },
                 }}
@@ -210,13 +210,13 @@ class TimeSummary extends React.Component {
                     alignItems: 'center',
                     color: 'blue',
                     fontWeight: 'bold',
-                    fontSize: 18,
+                    fontSize: 14,
                   },
                   placeholderText: {
                     color: 'blue',
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: 'bold',
-                    fontSize: 18,
+                    fontSize: 14,
                   },
                 }}
                 onDateChange={(startTime) => { this.setState({ startTime }) }}
@@ -234,7 +234,7 @@ class TimeSummary extends React.Component {
                 mode="date"
                 // androidMode='spinner'
                 style={[styles.timePickerBox, { marginLeft: 20 }]}
-                placeholder="Today"
+                placeholder="Select Date"
                 format={'MMM D YYYY'}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
@@ -261,11 +261,11 @@ class TimeSummary extends React.Component {
                     alignItems: 'center',
                     color: 'blue',
                     fontWeight: 'bold',
-                    fontSize: 18,
+                    fontSize: 14,
                   },
                   placeholderText: {
                     color: 'blue',
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: 'bold',
                   },
                 }}
@@ -307,13 +307,13 @@ class TimeSummary extends React.Component {
                     alignItems: 'center',
                     color: 'blue',
                     fontWeight: 'bold',
-                    fontSize: 18,
+                    fontSize: 14,
                   },
                   placeholderText: {
                     color: 'blue',
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: 'bold',
-                    fontSize: 18,
+                    fontSize: 14,
                   },
                 }}
                 onDateChange={(endTime) => { this.setState({ endTime }) }}
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   subTitle: {
-    fontSize: 16,
+    fontSize: 14,
     marginTop: 10,
     width: 50,
   },
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   title: {
-    fontSize: 22,
+    fontSize: 16,
     marginBottom: 10,
     marginLeft: 10,
     fontWeight: 'bold',

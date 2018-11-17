@@ -14,6 +14,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import { Permissions, Notifications } from 'expo';
 import { TextField } from 'react-native-material-textfield';
 import RadioForm from 'react-native-simple-radio-button';
 import Logo from '../../images/logo.png';
@@ -52,6 +53,50 @@ class Login extends React.Component {
       signUpActive: true,
       signInActive: false,
     };
+  }
+
+  componentDidMount() {
+    this.registerForPushNotificationsAsync();
+  }
+
+  async registerForPushNotificationsAsync() {
+    // const { status: existingStatus } = await Permissions.getAsync(
+    //   Permissions.NOTIFICATIONS
+    // );
+    // let finalStatus = existingStatus;
+  
+    // // only ask if permissions have not already been determined, because
+    // // iOS won't necessarily prompt the user a second time.
+    // alert(JSON.stringify(finalStatus));
+    // if (existingStatus !== 'granted') {
+    //   // Android remote notification permissions are granted during the app
+    //   // install, so this will only ask on iOS
+    //   const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    //   finalStatus = status;
+    // }
+  
+    // // Stop here if the user did not grant permissions
+    // if (finalStatus !== 'granted') {
+    //   return;
+    // }
+  
+    // // Get the token that uniquely identifies this device
+    // let token = await Notifications.getExpoPushTokenAsync();
+
+    Permissions.askAsync(Permissions.NOTIFICATIONS).then(status => {
+		  if(status.status === 'granted') {
+        Notifications.getExpoPushTokenAsync()
+          .then(token => {
+            console.log('TOKEN---->' + token);
+            AsyncStorage.setItem('token', token);
+          })
+          .catch(err => {
+            alert(JSON.stringify(err))
+            console.log(err);
+          })
+        }
+		});
+    // console.log('TOKEN---->' + token);
   }
 
   SignInClicked = (routeName) => {
