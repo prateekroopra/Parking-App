@@ -361,6 +361,7 @@ const MainApp = TabNavigator(
             style={{ color: tintColor }}
           />
         ),
+        // 1
         // tabBarOnPress: ({ scene, jumpToIndex }) => {
         //   alert('ddd')
         //   navigation.dispatch(NavigationActions.reset(
@@ -371,6 +372,24 @@ const MainApp = TabNavigator(
         //       ]
         //     }))
         // },
+        // 2
+        // tabBarComponent:  ({jumpToIndex, ...props, navigation}) => (
+        //   <TabBarBottom {...props} jumpToIndex={index => {
+        //     const { state } = navigation,
+        //           { routes } = state;
+        //     if (state.index === index && routes[index].index !== 0) {
+        //       navigation.dispatch(NavigationActions.reset({
+        //         index,
+        //         key: routes[index].key,
+        //         actions: [
+        //           NavigationActions.navigate({ routeName: routes[index].routeName })
+        //         ]
+        //       })
+        //     } else {
+        //       jumpToIndex(index);
+        //     }
+        //   }}/>
+        // )
       }),
     },
     PermitTab: {
@@ -406,6 +425,7 @@ const MainApp = TabNavigator(
     tabBarPosition: 'bottom',
     animationEnabled: false,
     swipeEnabled: false,
+    // backBehavior: 'initialRoute',
   }
 );
 
